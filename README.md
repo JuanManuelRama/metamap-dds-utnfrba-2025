@@ -1,80 +1,41 @@
-# java-base-project
+# MetaMap
 
-Esta es una plantilla de proyecto diseñada para: 
+**MetaMap** is an open-source, decentralized system designed for the collection, visualization, and collaborative mapping of information. Originally commissioned by an NGO, this platform empowers institutions, universities, and state agencies to deploy their own instances to harness collective intelligence for social good. Use cases range from tracking forest fires to reporting public safety incidents.
 
-* Java 17. :warning: Si bien el proyecto no lo limita explícitamente, el comando `mvn verify` no funcionará con versiones más antiguas de Java. 
-* JUnit 5. :warning: La versión 5 de JUnit es la más nueva del framework y presenta algunas diferencias respecto a la versión "clásica" (JUnit 4). Para mayores detalles, ver: 
-  *  [Apunte de herramientas](https://docs.google.com/document/d/1VYBey56M0UU6C0689hAClAvF9ILE6E7nKIuOqrRJnWQ/edit#heading=h.dnwhvummp994)
-  *  [Entrada de Blog (en inglés)](https://www.baeldung.com/junit-5-migration) 
-  *  [Entrada de Blog (en español)](https://www.paradigmadigital.com/dev/nos-espera-junit-5/)
-* Maven 3.8.1 o superior
+This system emphasizes data availability, accountability, and the strict protection of user identities. 
 
-## Ejecutar tests
+---
 
-```
-mvn test
-```
+## Core Features
 
-## Validar el proyecto de forma exahustiva
+### Diverse Data Sources
+The system aggregates data from multiple decentralized nodes to ensure high availability.
+* **Static Sources:** Supports bulk imports of historical data and public datasets directly via CSV files.
+* **Dynamic Sources:** Enables real-time, collaborative uploads of geotagged facts (including text, images, and videos). These contributions can be made by either anonymous or registered contributors.
+* **Proxy Sources:** Provides seamless integration with external NGO systems and other MetaMapa instances through REST APIs.
+* **Aggregators:** Features dedicated services that combine data from multiple sources. It includes periodic, asynchronous local caching to optimize search speeds and reduce computational costs.
 
-```
-mvn clean verify
-```
+### Collections & Consensus
+Administrators can create public Collections that automatically group facts based on configurable inclusion criteria.
+* **Navigation Modes:** Users can browse facts in an *unrestricted* mode (all facts) or a *curated* mode (only verified facts).
+* **Consensus Algorithms:** To mitigate misinformation, collections utilize algorithms like *Multiple Mentions*, *Simple Majority*, or *Absolute* to weigh the reliability of a fact across different decentralized sources.
 
-Este comando hará lo siguiente:
+### Roles & Accountability
+* **Viewers & Contributors:** Users can browse maps, apply filters, and submit new facts without sacrificing their privacy. 
+* **Administrators:** Authorized personnel can manage collections, extract statistics, and moderate system content.
+* **Moderation & Spam Filtering:** Users can submit deletion requests for sensitive or inaccurate facts. The system includes an automated filter to immediately reject spam requests, leaving valid reports for manual admin review.
 
- 1. Ejecutará los tests
- 2. Validará las convenciones de formato mediante checkstyle
- 3. Detectará la presencia de (ciertos) code smells
- 4. Validará la cobertura del proyecto
+### Search & Analytics
+* **Full-Text Search:** Includes advanced search capabilities across fact titles and descriptions to ensure users find relevant information even with typos or varied phrasing.
+* **Analytics Engine:** Periodically generates system usage statistics, such as facts by province, peak incident hours, and category distributions. All statistics can be exported in CSV format.
 
-## Entrega del proyecto
+---
 
-Para entregar el proyecto, crear un tag llamado `entrega-final`. Es importante que antes de realizarlo se corra la validación
-explicada en el punto anterior. Se recomienda hacerlo de la siguiente forma:
+## Architecture & Technology Stack
 
-```
-mvn clean verify && git tag entrega-final && git push origin HEAD --tags
-```
+MetaMapa is built with a decoupled, scalable architecture focusing on integration and performance:
 
-## Configuración del IDE (IntelliJ)
-
-### Usar el SDK de Java 17
-
-1. En **File/Project Structure...**, ir a **Project Settings | Project**
-2. En **Project SDK** seleccionar la versión 17 y en **Project language level** seleccionar `17 - Sealed types, always-strict floating-point semantics`
-
-![image](https://user-images.githubusercontent.com/39303639/228126065-221b9851-fb96-4f7f-a8e1-010732dc7ef6.png)
-
-### Usar fin de linea unix
-1. En **File/Settings...**, ir a **Editor | Code Style**.
-2. En la lista **Line separator**, seleccionar `Unix and OS X (\n)`.
-
-![image](https://user-images.githubusercontent.com/39303639/228126546-352289fa-8feb-4b39-99db-d8b860915fea.png)
-
-### Tabular con dos espacios
-
-1. En **File/Settings...**, ir a **Editor | Code Style | Java | Tabs and Indents**.
-2. Cambiar **Tab size**, **Indent** y **Continuation indent** a 2, 2 y 4 respectivamente:
-
-![image](https://user-images.githubusercontent.com/39303639/228127009-8c84ea72-969b-4e05-b311-45e3688a4164.png)
-
-### Ordenar los imports
-
-1. En **File/Settings...**, ir a **Editor | Code Style | Java | Imports**.
-2. Cambiar **Class count to use import with '*'** y **Names count to use static import with '*'** a un número muy alto (ej: 99).
-3. En **Import Layout**, dejarlo como se muestra a continuación:
-    - `import static all other imports`
-    - `<blank line>`
-    - `import all other imports`
-
-![image](https://user-images.githubusercontent.com/39303639/228126787-36f9ecff-27f2-4b99-bf11-a6bd89f67087.png)
-
-### Instalar y configurar Checkstyle
-
-1. Instalar el plugin https://plugins.jetbrains.com/plugin/1065-checkstyle-idea:
-2. En **File/Settings...**, ir a **Tools | Checkstyle**.
-3. Configurarlo activando los Checks de Google y la versión de Checkstyle `== 9.0.1`:
-
-![image](https://github.com/dds-utn/java-base-project/assets/11719816/b1edc122-4675-4f8d-bffc-9e3d3366fac6)
-
+* **Backend & Persistence:** Built using Java with Hibernate for robust Object-Relational Mapping (ORM) and data persistence, ensuring proper relational modeling and normalization.
+* **Web Framework:** Utilizes Javalin to provide a lightweight, efficient foundation for the application's API and web routing.
+* **Architecture Pattern:** MVC (Model-View-Controller) leveraging a client-side/server-side interface.
+* **Asynchronous Processing:** Heavy use of background, cron-style jobs for managing intensive tasks like aggregations and data syncing.
